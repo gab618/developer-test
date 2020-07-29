@@ -73,7 +73,9 @@ input {
 }
 
 select {
-  width: 100%;
+  width: 80%;
+  padding: 10px 0;
+  margin-left: 10%;
 }
 
 a {
