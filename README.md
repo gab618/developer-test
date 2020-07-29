@@ -2,7 +2,7 @@
 <br />
 <p align="center">
 
-  <h3 align="center">Developer Test</h3>
+  <h2 align="center">Developer Test</h3>
 
   <p align="center">
     Front/Middle	End	test for a great job application
@@ -18,7 +18,10 @@
 
 <!-- ABOUT THE PROJECT -->
 
-[![Preview][product-gif]](https://bolaocblol.netlify.app/)
+<p align="center">
+  
+  <a href="https://liveuniversity-test.herokuapp.com/"> <img width="480" height="270" src="https://media.giphy.com/media/J6Jdbs4O2LrwkuxrQ2/giphy.gif"> </a>
+</p>
 
 ### Techs
 
