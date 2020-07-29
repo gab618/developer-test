@@ -5,72 +5,165 @@
     <link rel="stylesheet" href="/styles/main.css" />
   </head>
   <body>
-    <main>
+    <main id="main">
       <div class="obj1">
         <div class="option" onclick="openNav()">Option</div>
         <div class="option">
           Quantity
-          <input
-            id="quantity"
-            type="number"
-            placeholder="Type here"
-            value="3"
-            min="0"
-            onchange="populateList(document.getElementById('quantity').value, document.getElementById('option').value)"
-          />
+          <input id="quantity" type="number" placeholder="Type here" min="0" />
         </div>
+
         <div id="obj2" class="obj2">
-          <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
-          <select
-            name="option"
-            id="option"
-            onchange="populateList(document.getElementById('quantity').value, document.getElementById('option').value)"
-          >
-            <% items.forEach(item => { %>
-            <option value="<%= item %>">Item <%= item %></option>
-            <% }) %>
-          </select>
+          <div>
+            <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+            <select name="option" id="option">
+              <% items.forEach(item => { %>
+              <option value="<%= item %>">Item <%= item %></option>
+              <% }) %>
+            </select>
+          </div>
         </div>
       </div>
 
       <div class="obj3">
         <div class="list">
-          <ul>
-            <li>Item 1</li>
-            <li>Item 2</li>
-            <li>Item 3</li>
-          </ul>
+          <!-- List here -->
         </div>
         <div class="arrows">
-          <div class="arrow"><</div>
-          <div class="arrow">></div>
+          <div class="arrow prev"><</div>
+          <div class="arrow next">></div>
         </div>
       </div>
     </main>
 
     <script>
       function openNav() {
-        document.getElementById("obj2").style.width = "250px";
-        document.getElementById("obj2").style.display = "inline";
+        state.navbar = true;
+        document.getElementById("obj2").style.width = "150px";
+        document.getElementById("obj2").style.visibility = "visible";
       }
 
       function closeNav() {
         document.getElementById("obj2").style.width = "0";
-        document.getElementById("obj2").style.display = "none";
+        document.getElementById("obj2").style.visibility = "hidden";
+
+        state.navbar = false;
       }
 
-      function populateList(quantity, option) {
+      function refreshData(quantity, option) {
         const data = Array.from({ length: quantity }).map(
           (_, i) =>
-            `<div class="item"><div class="number">${
+            `<div class="number">${i + 1}</div>Item ${option}${
               i + 1
-            }</div>Item ${option}${i + 1}<div></div></div>`
+            }<div></div>`
         );
-        const list = document.querySelector(".list");
-        list.innerHTML = data.join("");
+        return data;
+      }
+      // =================================================================
+      let data = refreshData(3, "A");
+
+      const html = {
+        get(element) {
+          return document.querySelector(element);
+        },
+      };
+
+      const perPage = 3;
+      const state = {
+        page: 1,
+        perPage,
+        totalPage: Math.ceil(data.length / perPage),
+        navbar: false,
+      };
+
+      const controls = {
+        next() {
+          state.page++;
+
+          const lastPage = state.page > state.totalPage;
+          if (lastPage) {
+            state.page--;
+          }
+        },
+
+        prev() {
+          state.page--;
+
+          if (state.page < 1) {
+            state.page++;
+          }
+        },
+
+        createListeners() {
+          html.get(".next").addEventListener("click", () => {
+            controls.next();
+            list.update();
+          });
+          html.get(".prev").addEventListener("click", () => {
+            controls.prev();
+            list.update();
+          });
+
+          html.get("#option").addEventListener("change", () => {
+            list.update();
+            if (
+              !html.get("#quantity").value ||
+              html.get("#quantity").value == 0
+            ) {
+              html.get("#quantity").classList.add("invalid");
+            } else {
+              html.get("#quantity").classList.remove("invalid");
+            }
+          });
+
+          html.get("#quantity").addEventListener("change", () => {
+            list.update();
+            if (
+              !html.get("#quantity").value ||
+              html.get("#quantity").value == 0
+            ) {
+              html.get("#quantity").classList.add("invalid");
+            } else {
+              html.get("#quantity").classList.remove("invalid");
+            }
+          });
+
+          html.get("#option").addEventListener("click", () => {
+            list.update();
+          });
+        },
+      };
+
+      const list = {
+        create(item) {
+          const div = document.createElement("div");
+          div.classList.add("item");
+          div.innerHTML = item;
+
+          html.get(".list").appendChild(div);
+        },
+        update() {
+          html.get(".list").innerHTML = "";
+          const quantity = document.getElementById("quantity").value;
+          const option = document.getElementById("option").value;
+          data = refreshData(quantity, option);
+          state.totalPage = Math.ceil(data.length / perPage);
+
+          let page = state.page - 1;
+          let start = page * state.perPage;
+          let end = start + state.perPage;
+
+          const paginatedItems = data.slice(start, end);
+          paginatedItems.forEach(list.create);
+        },
+      };
+
+      function init() {
+        list.update();
+        controls.createListeners();
       }
 
-      populateList(3, "A");
+      init();
     </script>
   </body>
 </html>
