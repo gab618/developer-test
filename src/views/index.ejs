@@ -15,7 +15,6 @@
 
         <div id="obj2" class="obj2">
           <div>
-            <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
             <select name="option" id="option">
               <% items.forEach(item => { %>
               <option value="<%= item %>">Item <%= item %></option>
@@ -34,6 +33,7 @@
           <div class="arrow next">></div>
         </div>
       </div>
+      <div id="wall" class="wall" onclick="closeNav()"></div>
     </main>
 
     <script>
@@ -41,11 +41,13 @@
         state.navbar = true;
         document.getElementById("obj2").style.width = "150px";
         document.getElementById("obj2").style.visibility = "visible";
+        document.getElementById("wall").style.display = "block";
       }
 
       function closeNav() {
         document.getElementById("obj2").style.width = "0";
         document.getElementById("obj2").style.visibility = "hidden";
+        document.getElementById("wall").style.display = "none";
 
         state.navbar = false;
       }
