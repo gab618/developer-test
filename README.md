@@ -20,7 +20,7 @@
 
 <p align="center">
   
-  <a href="https://liveuniversity-test.herokuapp.com/"> <img width="480" height="270" src="https://media.giphy.com/media/J6Jdbs4O2LrwkuxrQ2/giphy.gif"> </a>
+  <a href="https://liveuniversity-test.herokuapp.com/" align="center"> <img width="620" height="405" src="https://media.giphy.com/media/J6Jdbs4O2LrwkuxrQ2/giphy.gif"> </a>
 </p>
 
 ### Techs
