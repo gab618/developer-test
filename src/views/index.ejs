@@ -2,14 +2,75 @@
 <html>
   <head>
     <title><%= title%></title>
+    <link rel="stylesheet" href="/styles/main.css" />
   </head>
   <body>
     <main>
-      <h1><%= title %></h1>
-      <p>Bem vindo(a) ao <strong><%= title %></strong></p>
+      <div class="obj1">
+        <div class="option" onclick="openNav()">Option</div>
+        <div class="option">
+          Quantity
+          <input
+            id="quantity"
+            type="number"
+            placeholder="Type here"
+            value="3"
+            min="0"
+            onchange="populateList(document.getElementById('quantity').value, document.getElementById('option').value)"
+          />
+        </div>
+        <div id="obj2" class="obj2">
+          <a href="javascript:void(0)" onclick="closeNav()">&times;</a>
+          <select
+            name="option"
+            id="option"
+            onchange="populateList(document.getElementById('quantity').value, document.getElementById('option').value)"
+          >
+            <% items.forEach(item => { %>
+            <option value="<%= item %>">Item <%= item %></option>
+            <% }) %>
+          </select>
+        </div>
+      </div>
+
+      <div class="obj3">
+        <div class="list">
+          <ul>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+          </ul>
+        </div>
+        <div class="arrows">
+          <div class="arrow"><</div>
+          <div class="arrow">></div>
+        </div>
+      </div>
     </main>
-    <footer>
-      <p>Versão <%= version %></p>
-    </footer>
+
+    <script>
+      function openNav() {
+        document.getElementById("obj2").style.width = "250px";
+        document.getElementById("obj2").style.display = "inline";
+      }
+
+      function closeNav() {
+        document.getElementById("obj2").style.width = "0";
+        document.getElementById("obj2").style.display = "none";
+      }
+
+      function populateList(quantity, option) {
+        const data = Array.from({ length: quantity }).map(
+          (_, i) =>
+            `<div class="item"><div class="number">${
+              i + 1
+            }</div>Item ${option}${i + 1}<div></div></div>`
+        );
+        const list = document.querySelector(".list");
+        list.innerHTML = data.join("");
+      }
+
+      populateList(3, "A");
+    </script>
   </body>
 </html>
